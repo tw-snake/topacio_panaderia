@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Otros || Topacio®</title>
+
+    <link rel="icon" type="icon" href="img/icono.png">
+    <link rel="stylesheet" href="estilo.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body id="Admin-body">
+    <div id="Nav-Admin">
+        <aside class="sidebar">
+            <div class="admin-logo">
+                <img src="img/Logotipo.png" alt="logo" style="width: 200px;">
+            </div>
+            <nav>
+                <ul>
+                    <li ><a href="Inventario-PanBlanco.html">Pan Blanco</a></li>
+                    <li ><a href="Inventario-PanIntegral.html">Pan Integral</a></li>
+                    <li ><a href="Inventario-PanDulce.html">Pan Dulce</a></li>
+                    <li class="activo"><a href="Inventario-Otros.html">Otros</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="contenido-admin">
+            <header class="header-admin">
+                <h2>Otros</h2>
+
+                <!-- Botón de agregar producto -->
+                <button class="agregar-producto" onclick="mostrarPopup('Agregar')">Agregar producto +</button>
+                <button class="cerrar-sesion">Cerrar sesión</button>
+            </header>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio c/u</th>
+                        <th>Descripción</th>
+                        <th>Foto</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bolillo</td>
+                        <td>$3.00 MXN</td>
+                        <td>Cocido en horno de piedra.</td>
+                        <td>panBlanco_bolillo.png</td>
+                        <td>
+                            <!-- Botón de editar producto -->
+                            <button class="editar" onclick="mostrarPopup('Editar', this)">Editar</button>
+                            <button class="eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <!-- Popup compartido -->
+        <div id="popupForm" class="popup-form oculto">
+            <div class="popup-contenido">
+                <button class="cerrar-popup" onclick="cerrarPopup()">×</button>
+                <h2 class="popup-tit" id="popupTitulo">Agregar producto</h2>
+                <form id="popupFormulario">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre" required>
+
+                    <label for="precio">Precio c/u</label>
+                    <input type="number" id="precio" placeholder="Precio c/u" required>
+
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" placeholder="Descripción" required></textarea>
+
+                    <label for="foto">Foto</label>
+                    <div class="input-file">
+                        <input type="file" id="foto" accept="image/*" class="oculto">
+                        <button type="button" class="btn-file"
+                            onclick="document.getElementById('foto').click()">Seleccionar archivo</button>
+                        <span id="file-name" class="file-name">No se ha seleccionado ningún archivo</span>
+                    </div>
+
+                    <button type="submit" class="btn-agregar" id="btnFormulario">Agregar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Popup de confirmación de eliminación -->
+        <div id="popupEliminar" class="popup-form oculto">
+            <div class="popup-contenido-eliminar">
+                <p>¿Estás seguro de que deseas eliminar este producto?</p>
+                <div class="botones-eliminar">
+                    <button class="btn-confirmar" onclick="confirmarEliminar()">Aceptar</button>
+                    <button class="btn-cancelar" onclick="cerrarPopupEliminar()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function mostrarPopup(accion, botonEditar = null) {
+            const popupForm = document.getElementById('popupForm');
+            const titulo = document.getElementById('popupTitulo');
+            const botonFormulario = document.getElementById('btnFormulario');
+
+            // Mostrar el popup
+            popupForm.classList.add('mostrar');
+
+            if (accion === 'Agregar') {
+                // Configuración para "Agregar producto"
+                titulo.textContent = 'Agregar producto';
+                botonFormulario.textContent = 'Agregar';
+                botonFormulario.onclick = (e) => {
+                    e.preventDefault();
+                    console.log("Producto agregado"); // Lógica para agregar producto
+                    cerrarPopup();
+                };
+
+                // Limpiar formulario
+                document.getElementById('nombre').value = '';
+                document.getElementById('precio').value = '';
+                document.getElementById('descripcion').value = '';
+                document.getElementById('file-name').textContent = 'No se ha seleccionado ningún archivo';
+            } else if (accion === 'Editar') {
+                // Configuración para "Editar producto"
+                titulo.textContent = 'Editar producto';
+                botonFormulario.textContent = 'Guardar cambios';
+                botonFormulario.onclick = (e) => {
+                    e.preventDefault();
+                    console.log("Producto editado"); // Lógica para editar producto
+                    cerrarPopup();
+                };
+
+                // Obtener datos del producto a editar (fila de la tabla)
+                const fila = botonEditar.parentElement.parentElement;
+                const nombre = fila.children[0].textContent;
+                const precio = fila.children[1].textContent.replace('$', '').replace(' MXN', '');
+                const descripcion = fila.children[2].textContent;
+                const foto = fila.children[3].textContent;
+
+                // Llenar el formulario con los datos existentes
+                document.getElementById('nombre').value = nombre;
+                document.getElementById('precio').value = precio;
+                document.getElementById('descripcion').value = descripcion;
+                document.getElementById('file-name').textContent = foto;
+            }
+        }
+
+        function cerrarPopup() {
+            const popupForm = document.getElementById('popupForm');
+            popupForm.classList.remove('mostrar');
+        }
+
+
+        let productoAEliminar = null;
+
+        function mostrarPopupEliminar(botonEliminar) {
+            const popupEliminar = document.getElementById('popupEliminar');
+            popupEliminar.classList.add('mostrar');
+
+            // Guardar la referencia de la fila para eliminar
+            productoAEliminar = botonEliminar.parentElement.parentElement;
+        }
+
+        function cerrarPopupEliminar() {
+            const popupEliminar = document.getElementById('popupEliminar');
+            popupEliminar.classList.remove('mostrar');
+        }
+
+        function confirmarEliminar() {
+            if (productoAEliminar) {
+                productoAEliminar.remove(); // Eliminar la fila de la tabla
+                productoAEliminar = null;
+            }
+            cerrarPopupEliminar();
+        }
+
+        // Asignar el evento al botón de eliminar
+        document.querySelectorAll('.eliminar').forEach(boton => {
+            boton.addEventListener('click', function () {
+                mostrarPopupEliminar(this);
+            });
+        });
+
+
+
+        document.getElementById('foto').addEventListener('change', function () {
+            const fileName = this.files[0]?.name || 'No se ha seleccionado ningún archivo';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>

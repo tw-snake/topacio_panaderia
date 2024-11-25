@@ -1,0 +1,115 @@
+/* Estilos para el Modal */
+.modal {
+    display: none; /* El modal está oculto por defecto */
+    position: fixed;
+    z-index: 999; /* Asegura que el modal quede encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semi-transparente */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Evitar que se desborde el modal */
+}
+
+.modal.visible {
+    display: flex;  /* Mostrar el modal cuando se le añada la clase visible */
+    animation: fadeIn 0.3s ease; /* Animación suave */
+}
+
+/* Animación para mostrar el modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px; /* Redondeo mayor para que se vea más suave */
+    padding: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 80%;
+    position: relative; /* Necesario para posicionar el botón de cerrar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para hacer que resalte */
+    overflow: hidden; /* Evitar desbordamiento del contenido */
+    line-height: 1.5; /* Mejora la legibilidad */
+}
+
+/* Estilo para la imagen del modal */
+.modal-img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* Estilo para el nombre del producto */
+#modalNombre {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px; /* Espaciado con la línea debajo */
+    color: #333;
+    position: relative;
+}
+
+/* Línea debajo del nombre del producto */
+#modalNombre::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 2px;
+    background-color: #ddd; /* Línea delgada gris */
+    margin: 10px auto; /* Centrado de la línea */
+}
+
+/* Estilo para la descripción */
+#modalDescripcion {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px; /* Incrementar espaciado con el precio */
+    text-align: center; /* Centrar la descripción */
+}
+
+/* Línea delgada debajo de la descripción */
+#modalDescripcion::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 2px;
+    background-color: #ddd; /* Línea delgada gris */
+    margin: 15px auto; /* Centrado de la línea */
+}
+
+/* Mejorar el color y formato del precio */
+#modalPrecio {
+    font-size: 20px;
+    font-weight: bold;
+    color: #E4C667; /* Color dorado */
+    margin-top: 10px;
+    text-align: center; /* Centrado del precio */
+}
+
+/* Estilo para el botón de cerrar */
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    color: #aaa;
+    cursor: pointer;
+    z-index: 1000; /* Asegura que el botón quede encima del contenido */
+}
+
+.modal .close:hover,
+.modal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
